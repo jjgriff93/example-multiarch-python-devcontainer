@@ -1,0 +1,55 @@
+{
+	"name": "Multiarch",
+	"build": {
+		"context": "..",
+		"dockerfile": "Dockerfile",
+		"args": {
+			"DOCKER_GROUP_ID": "1001"
+		}
+	},
+	"runArgs": [
+		"--network", "host"
+	],
+	"mounts": [
+		// Keep command history
+		"type=volume,source=tre-bashhistory,target=/home/vscode/commandhistory",
+		// Mounts the login details from the host machine to azcli works in the container
+		"type=bind,source=${env:HOME}${env:USERPROFILE}/.azure,target=/home/vscode/.azure",
+		// Mount docker socket for docker builds
+		"type=bind,source=/var/run/docker.sock,target=/var/run/docker.sock"
+	],
+	"remoteUser": "vscode",
+	// Set *default* container specific settings.json values on container create.
+	"settings": {
+		"terminal.integrated.defaultProfile.linux": "bash",
+		"python.pythonPath": "/usr/local/bin/python",
+		"python.linting.enabled": true,
+		"python.linting.pylintEnabled": true,
+		"python.formatting.autopep8Path": "/usr/local/py-utils/bin/autopep8",
+		"python.formatting.blackPath": "/usr/local/py-utils/bin/black",
+		"python.formatting.yapfPath": "/usr/local/py-utils/bin/yapf",
+		"python.linting.banditPath": "/usr/local/py-utils/bin/bandit",
+		"python.linting.flake8Path": "/usr/local/py-utils/bin/flake8",
+		"python.linting.mypyPath": "/usr/local/py-utils/bin/mypy",
+		"python.linting.pycodestylePath": "/usr/local/py-utils/bin/pycodestyle",
+		"python.linting.pydocstylePath": "/usr/local/py-utils/bin/pydocstyle",
+		"python.linting.pylintPath": "/usr/local/py-utils/bin/pylint",
+		"launch": {
+			"configurations": [],
+			"compounds": []
+		}
+	},
+	// Add the IDs of extensions you want installed when the container is created.
+	"extensions": [
+		"ms-python.python",
+		"hashicorp.terraform",
+		"github.vscode-pull-request-github",
+		"ms-kubernetes-tools.porter-vscode",
+		"davidanson.vscode-markdownlint",
+		"editorconfig.editorconfig",
+		"github.vscode-pull-request-github",
+		"mikestead.dotenv",
+		"humao.rest-client"
+	],
+	"forwardPorts": [8000]
+}
